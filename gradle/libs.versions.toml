@@ -1,0 +1,17 @@
+[versions]
+
+androidMaterial = "1.8.0"
+
+androidGradlePlugin = "8.0.1"
+androidKotlin = "1.8.0"
+
+[libraries]
+
+android-material = { group = "com.google.android.material", name = "material", version.ref = "androidMaterial"}
+
+[plugins]
+
+android-application = { id = "com.android.application", version.ref = "androidGradlePlugin"}
+android-library = { id = "com.android.library", version.ref = "androidGradlePlugin"}
+
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "androidKotlin"}

@@ -26,13 +26,11 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 private const val API_KEY = "804967b7a2934d2a965221051232602"
-
 
 class MainFragment : Fragment() {
     private lateinit var binding: FragmentMainBinding
@@ -105,7 +103,6 @@ class MainFragment : Fragment() {
             .build()
 
         CoroutineScope(Dispatchers.Main).launch {
-            delay(5000)
             val api = retrofit.create(MainApi::class.java)
             val modelData =
                 api.getWeatherData(

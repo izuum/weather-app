@@ -29,8 +29,18 @@ android {
   kotlinOptions {
     jvmTarget = "1.8"
   }
+  buildFeatures {
+    viewBinding = true
+  }
 }
 
 dependencies {
   implementation(libs.android.material)
+  implementation(libs.android.swipe)
+  implementation(libs.fragments)
+  implementation(libs.android.gms)
+  implementation(libs.android.appcompat)
+  implementation(libs.android.constraint)
+  implementation(libs.retrofit)
+  implementation(libs.retrofit.converter.gson)
 }

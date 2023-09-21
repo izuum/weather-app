@@ -1,26 +1,23 @@
 package com.github.izuum.weatherapp.fragments
 
-import android.Manifest
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Color
 import android.location.Location
-import android.location.LocationManager
 import android.os.Bundle
 import android.os.Handler
 import android.provider.Settings
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.github.izuum.weatherapp.MainViewModel
 import com.github.izuum.weatherapp.databinding.FragmentMainBinding
+import com.github.izuum.weatherapp.extensions.checkPermission
+import com.github.izuum.weatherapp.extensions.isLocationEnabled
+import com.github.izuum.weatherapp.extensions.requestPermission
 import com.github.izuum.weatherapp.retorfit.MainApi
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -85,8 +82,7 @@ class MainFragment : Fragment() {
             Color.RED
         )
     }
-
-
+    
     private fun updateWeatherInfo() = with(binding) {
         model.liveDataCurrent.observe(viewLifecycleOwner) {
             tvCityName.text = it.location.name
@@ -116,9 +112,7 @@ class MainFragment : Fragment() {
     }
 
     companion object {
-
-        private const val PERMISSION_REQUEST_ACCESS_LOCATION = 100
-
+        const val PERMISSION_REQUEST_ACCESS_LOCATION = 100
         @JvmStatic
         fun newInstance() = MainFragment()
     }
@@ -143,34 +137,5 @@ class MainFragment : Fragment() {
             requestPermission()
         }
         return nameOfCity
-    }
-
-    private fun checkPermission(): Boolean {
-        return ActivityCompat.checkSelfPermission(
-            activity as AppCompatActivity,
-            Manifest.permission.ACCESS_FINE_LOCATION
-        ) == PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(
-                    activity as AppCompatActivity,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                ) == PackageManager.PERMISSION_GRANTED
-    }
-
-    private fun isLocationEnabled(): Boolean {
-        val locationManager: LocationManager =
-            activity?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
-                locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
-    }
-
-    private fun requestPermission() {
-        ActivityCompat.requestPermissions(
-            activity as AppCompatActivity,
-            arrayOf(
-                Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ),
-            PERMISSION_REQUEST_ACCESS_LOCATION
-        )
     }
 }

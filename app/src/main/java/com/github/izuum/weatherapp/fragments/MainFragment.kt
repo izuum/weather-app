@@ -22,7 +22,6 @@ import com.github.izuum.weatherapp.retorfit.RequestWeather
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 
-
 class MainFragment : Fragment() {
     private lateinit var binding: FragmentMainBinding
     private val model: MainViewModel by activityViewModels()
@@ -30,7 +29,6 @@ class MainFragment : Fragment() {
     private var requestWeather = RequestWeather()
     private lateinit var handler: Handler
     private lateinit var runnable: Runnable
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,12 +41,11 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
-
         getCurrentLocation()
-
+        requestWeather.getWeather(model)
+        updateWeatherInfo()
         swipeFun()
     }
-
 
     private fun init() {
         handler = Handler()
@@ -61,7 +58,6 @@ class MainFragment : Fragment() {
         binding.swipeRefreshLayout.setOnRefreshListener {
             runnable = Runnable {
                 getCurrentLocation()
-
                 requestWeather.getWeather(model)
 
                 updateWeatherInfo()
@@ -76,7 +72,7 @@ class MainFragment : Fragment() {
             Color.RED
         )
     }
-    
+
     private fun updateWeatherInfo() = with(binding) {
         model.liveDataCurrent.observe(viewLifecycleOwner) {
             tvCityName.text = it.location.name

@@ -2,7 +2,7 @@
 
 androidMaterial = "1.8.0"
 
-androidGradlePlugin = "8.0.1"
+androidGradlePlugin = "8.1.1"
 androidKotlin = "1.8.0"
 androidFragment = "1.6.1"
 androidGms = "21.0.1"

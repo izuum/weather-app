@@ -18,22 +18,16 @@ import com.github.izuum.weatherapp.databinding.FragmentMainBinding
 import com.github.izuum.weatherapp.extensions.checkPermission
 import com.github.izuum.weatherapp.extensions.isLocationEnabled
 import com.github.izuum.weatherapp.extensions.requestPermission
-import com.github.izuum.weatherapp.retorfit.MainApi
+import com.github.izuum.weatherapp.retorfit.RequestWeather
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
-private const val API_KEY = "804967b7a2934d2a965221051232602"
 
 class MainFragment : Fragment() {
     private lateinit var binding: FragmentMainBinding
     private val model: MainViewModel by activityViewModels()
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
-    private var nameOfCity: String = ""
+    private var requestWeather = RequestWeather()
     private lateinit var handler: Handler
     private lateinit var runnable: Runnable
 
@@ -50,7 +44,7 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         init()
 
-        nameOfCity = getCurrentLocation()
+        getCurrentLocation()
 
         swipeFun()
     }
@@ -66,9 +60,9 @@ class MainFragment : Fragment() {
     private fun swipeFun() {
         binding.swipeRefreshLayout.setOnRefreshListener {
             runnable = Runnable {
-                nameOfCity = getCurrentLocation()
+                getCurrentLocation()
 
-                getWeather()
+                requestWeather.getWeather(model)
 
                 updateWeatherInfo()
                 binding.swipeRefreshLayout.isRefreshing = false
@@ -92,32 +86,13 @@ class MainFragment : Fragment() {
         }
     }
 
-    private fun getWeather() {
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://api.weatherapi.com/v1/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-        CoroutineScope(Dispatchers.Main).launch {
-            val api = retrofit.create(MainApi::class.java)
-            val modelData =
-                api.getWeatherData(
-                    API_KEY,
-                    nameOfCity,
-                    "no",
-                    "ru"
-                )
-            model.liveDataCurrent.value = modelData
-        }
-    }
-
     companion object {
         const val PERMISSION_REQUEST_ACCESS_LOCATION = 100
         @JvmStatic
         fun newInstance() = MainFragment()
     }
 
-    private fun getCurrentLocation(): String {
+    private fun getCurrentLocation() {
         if (checkPermission()) {
             if (isLocationEnabled()) {
                 fusedLocationProviderClient.lastLocation.addOnCompleteListener(activity as Activity) { task ->
@@ -125,7 +100,7 @@ class MainFragment : Fragment() {
                     if (location == null) {
                         Toast.makeText(activity, "Null Received", Toast.LENGTH_SHORT).show()
                     } else {
-                        nameOfCity = ("${location.latitude},${location.longitude}")
+                        model.cityName.value = ("${location.latitude},${location.longitude}")
                     }
                 }
             } else {
@@ -136,6 +111,5 @@ class MainFragment : Fragment() {
         } else {
             requestPermission()
         }
-        return nameOfCity
     }
 }

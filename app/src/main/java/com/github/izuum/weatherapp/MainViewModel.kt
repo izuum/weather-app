@@ -5,4 +5,5 @@ import androidx.lifecycle.ViewModel
 
 class MainViewModel : ViewModel() {
     val liveDataCurrent = MutableLiveData<WeatherData>()
+    val cityName = MutableLiveData<String>()
 }

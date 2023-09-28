@@ -7,6 +7,7 @@ import android.location.Location
 import android.os.Bundle
 import android.os.Handler
 import android.provider.Settings
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +22,10 @@ import com.github.izuum.weatherapp.extensions.requestPermission
 import com.github.izuum.weatherapp.retorfit.RequestWeather
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class MainFragment : Fragment() {
     private lateinit var binding: FragmentMainBinding
@@ -41,9 +46,7 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
-        getCurrentLocation()
-        requestWeather.getWeather(model)
-        updateWeatherInfo()
+        allAction()
         swipeFun()
     }
 
@@ -51,16 +54,12 @@ class MainFragment : Fragment() {
         handler = Handler()
         fusedLocationProviderClient =
             LocationServices.getFusedLocationProviderClient(requireContext())
-
     }
 
     private fun swipeFun() {
         binding.swipeRefreshLayout.setOnRefreshListener {
             runnable = Runnable {
-                getCurrentLocation()
-                requestWeather.getWeather(model)
-
-                updateWeatherInfo()
+                allAction()
                 binding.swipeRefreshLayout.isRefreshing = false
             }
             handler.postDelayed(runnable, 500.toLong())
@@ -87,8 +86,17 @@ class MainFragment : Fragment() {
         @JvmStatic
         fun newInstance() = MainFragment()
     }
+    private fun allAction(){
+        CoroutineScope(Dispatchers.Main).launch {
+            getCurrentLocation()
+            delay(50)
+            requestWeather.getWeather(model)
+            updateWeatherInfo()
+        }
+    }
 
     private fun getCurrentLocation() {
+        Log.d("getCurrentLocation", "Started")
         if (checkPermission()) {
             if (isLocationEnabled()) {
                 fusedLocationProviderClient.lastLocation.addOnCompleteListener(activity as Activity) { task ->

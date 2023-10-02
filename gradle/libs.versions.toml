@@ -12,6 +12,7 @@ androidConstraint = "2.1.4"
 swipeVer = "1.1.0"
 
 retrofit = "2.9.0"
+glide = "4.14.2"
 
 [libraries]
 
@@ -24,6 +25,7 @@ android-constraint = { group = "androidx.constraintlayout", name = "constraintla
 
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit"}
 retrofit-converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit"}
+glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide"}
 
 [plugins]
 

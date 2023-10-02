@@ -1,5 +1,6 @@
 package com.github.izuum.weatherapp.fragments
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
@@ -7,13 +8,13 @@ import android.location.Location
 import android.os.Bundle
 import android.os.Handler
 import android.provider.Settings
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.bumptech.glide.Glide
 import com.github.izuum.weatherapp.MainViewModel
 import com.github.izuum.weatherapp.databinding.FragmentMainBinding
 import com.github.izuum.weatherapp.extensions.checkPermission
@@ -26,6 +27,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.text.Typography.degree
 
 class MainFragment : Fragment() {
     private lateinit var binding: FragmentMainBinding
@@ -38,7 +40,7 @@ class MainFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentMainBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -72,12 +74,16 @@ class MainFragment : Fragment() {
         )
     }
 
+    @SuppressLint("SetTextI18n")
     private fun updateWeatherInfo() = with(binding) {
         model.liveDataCurrent.observe(viewLifecycleOwner) {
             tvCityName.text = it.location.name
-            tvTemp.text = it.current.temp_c.toString()
+            tvTemp.text = it.current.temp_c.toInt().toString() + degree
             tvDescription.text = it.current.condition.text
             tvLastUpdate.text = it.current.last_updated
+            Glide.with(requireContext())
+                .load("https:" + it.current.condition.icon)
+                .into(binding.imageView)
         }
     }
 
@@ -96,7 +102,6 @@ class MainFragment : Fragment() {
     }
 
     private fun getCurrentLocation() {
-        Log.d("getCurrentLocation", "Started")
         if (checkPermission()) {
             if (isLocationEnabled()) {
                 fusedLocationProviderClient.lastLocation.addOnCompleteListener(activity as Activity) { task ->

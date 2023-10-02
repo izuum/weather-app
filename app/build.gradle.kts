@@ -43,4 +43,5 @@ dependencies {
   implementation(libs.android.constraint)
   implementation(libs.retrofit)
   implementation(libs.retrofit.converter.gson)
+  implementation(libs.glide)
 }

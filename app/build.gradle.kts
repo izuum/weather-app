@@ -6,12 +6,12 @@ plugins {
 
 android {
   namespace = "com.github.izuum.weatherapp"
-  compileSdk = 33
+  compileSdk = 34
 
   defaultConfig {
     applicationId = "com.github.izuum.weatherapp"
     minSdk = 26
-    targetSdk = 33
+    targetSdk = 34
     versionCode = 1
     versionName = "1.0"
   }
@@ -41,6 +41,9 @@ dependencies {
   implementation(libs.android.gms)
   implementation(libs.android.appcompat)
   implementation(libs.android.constraint)
+  implementation(libs.lifecycle.livedata)
+  implementation(libs.lifecycle.viewmodel)
+
   implementation(libs.retrofit)
   implementation(libs.retrofit.converter.gson)
   implementation(libs.glide)

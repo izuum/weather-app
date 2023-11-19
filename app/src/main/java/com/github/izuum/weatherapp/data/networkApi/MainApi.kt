@@ -1,6 +1,6 @@
-package com.github.izuum.weatherapp.retorfit
+package com.github.izuum.weatherapp.data.networkApi
 
-import com.github.izuum.weatherapp.WeatherData
+import com.github.izuum.weatherapp.data.models.WeatherData
 import retrofit2.http.GET
 import retrofit2.http.Query
 

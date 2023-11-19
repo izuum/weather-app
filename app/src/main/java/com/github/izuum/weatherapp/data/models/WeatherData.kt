@@ -1,4 +1,4 @@
-package com.github.izuum.weatherapp
+package com.github.izuum.weatherapp.data.models
 
 data class WeatherData(
     var location: Location,
@@ -19,5 +19,3 @@ data class Condition(
     var text: String,
     var icon: String
 )
-
-

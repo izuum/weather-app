@@ -1,4 +1,4 @@
-package com.github.izuum.weatherapp.extensions
+package com.github.izuum.weatherapp.data.extensions
 
 import android.Manifest
 import android.content.Context
@@ -7,7 +7,7 @@ import android.location.LocationManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
-import com.github.izuum.weatherapp.fragments.MainFragment
+import com.github.izuum.weatherapp.presenter.fragments.MainFragment
 
 fun Fragment.checkPermission(): Boolean {
     return ActivityCompat.checkSelfPermission(

@@ -1,9 +1,9 @@
-package com.github.izuum.weatherapp
-
+package com.github.izuum.weatherapp.presenter
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.github.izuum.weatherapp.fragments.MainFragment
+import com.github.izuum.weatherapp.R
+import com.github.izuum.weatherapp.presenter.fragments.MainFragment
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

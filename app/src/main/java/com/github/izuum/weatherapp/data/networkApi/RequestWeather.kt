@@ -1,6 +1,6 @@
 package com.github.izuum.weatherapp.data.networkApi
 
-import com.github.izuum.weatherapp.data.liveData.cityName
+import com.github.izuum.weatherapp.data.liveData.coordinates
 import com.github.izuum.weatherapp.data.liveData.weatherFromApiLiveData
 import com.github.izuum.weatherapp.data.models.Condition
 import com.github.izuum.weatherapp.data.models.Current
@@ -26,7 +26,7 @@ class RequestWeather {
             val modelData =
                 api.getWeatherData(
                     API_KEY,
-                    cityName.value.toString(),
+                    coordinates.value.toString(),
                     "no",
                     "ru"
                 )

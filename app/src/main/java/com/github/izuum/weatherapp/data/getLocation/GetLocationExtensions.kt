@@ -1,39 +1,39 @@
-package com.github.izuum.weatherapp.data.extensions
+package com.github.izuum.weatherapp.data.getLocation
 
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.LocationManager
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.fragment.app.Fragment
-import com.github.izuum.weatherapp.presenter.fragments.MainFragment
+import com.google.android.material.internal.ContextUtils.getActivity
 
-fun Fragment.checkPermission(): Boolean {
+const val PERMISSION_REQUEST_ACCESS_LOCATION = 100
+
+fun GetLocation.checkPermission(context: Context): Boolean {
     return ActivityCompat.checkSelfPermission(
-        activity as AppCompatActivity,
+        getActivity(context)!!,
         Manifest.permission.ACCESS_FINE_LOCATION
     ) == PackageManager.PERMISSION_GRANTED &&
             ActivityCompat.checkSelfPermission(
-                activity as AppCompatActivity,
+                getActivity(context)!!,
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED
 }
 
-fun Fragment.isLocationEnabled(): Boolean {
+fun GetLocation.isLocationEnabled(context: Context): Boolean {
     val locationManager: LocationManager =
-        activity?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        getActivity(context)?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
     return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
             locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
 }
 
-fun Fragment.requestPermission() {
+fun GetLocation.requestPermission(context: Context) {
     ActivityCompat.requestPermissions(
-        activity as AppCompatActivity,
+        getActivity(context)!!,
         arrayOf(
             Manifest.permission.ACCESS_COARSE_LOCATION,
             Manifest.permission.ACCESS_FINE_LOCATION
         ),
-        MainFragment.PERMISSION_REQUEST_ACCESS_LOCATION
+        PERMISSION_REQUEST_ACCESS_LOCATION
     )
 }

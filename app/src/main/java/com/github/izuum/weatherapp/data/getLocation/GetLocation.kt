@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.location.Location
 import android.provider.Settings
+import android.util.Log
 import android.widget.Toast
 import com.github.izuum.weatherapp.data.liveData.coordinates
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -19,11 +20,16 @@ class GetLocation(private val context: Context) {
         if (checkPermission(context)) {
             if (isLocationEnabled(context)) {
                 fusedLocationProviderClient.lastLocation.addOnCompleteListener(getActivity(context)!!) { task ->
-                    val location: Location? = task.result
-                    if (location == null) {
-                        Toast.makeText(getActivity(context), "Null Received", Toast.LENGTH_SHORT).show()
-                    } else {
-                        coordinates.value = ("${location.latitude},${location.longitude}")
+                    if (task.isSuccessful){
+                        val location: Location? = task.result
+                        if (location == null) {
+                            Toast.makeText(getActivity(context), "Null Received", Toast.LENGTH_SHORT).show()
+                        } else {
+                            coordinates.value = ("${location.latitude},${location.longitude}")
+                        }
+                    }else {
+                        Toast.makeText(getActivity(context), "Error getting location", Toast.LENGTH_SHORT).show()
+                        Log.e("LocationError", "Error getting location", task.exception)
                     }
                 }
             } else {

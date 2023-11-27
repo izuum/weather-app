@@ -3,5 +3,5 @@ package com.github.izuum.weatherapp.domain.repository
 import com.github.izuum.weatherapp.domain.models.WeatherDataFromDomain
 
 interface WeatherRepository {
-    fun getForecast(): WeatherDataFromDomain
+   suspend fun getForecast(): WeatherDataFromDomain
 }

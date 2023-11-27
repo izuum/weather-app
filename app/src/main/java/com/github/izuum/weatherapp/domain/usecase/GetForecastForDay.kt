@@ -5,7 +5,7 @@ import com.github.izuum.weatherapp.domain.repository.WeatherRepository
 
 class GetForecastForDay(private val weatherRepository: WeatherRepository) {
 
-    fun execute(): WeatherDataFromDomain{
+    suspend fun execute(): WeatherDataFromDomain{
         return weatherRepository.getForecast()
     }
 }
